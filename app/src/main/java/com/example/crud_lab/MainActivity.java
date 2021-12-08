@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
 
         ArrayList<Contact> contacts = new ArrayList<>();
         RequestQueue requestQueue= Volley.newRequestQueue(this);
-        String url="https://task-force-backend-challenge.herokuapp.com/api/v1/user/list";
+        String url="https://api.github.com/users";
 
         //"https://task-force-backend-challenge.herokuapp.com/api/v1/user/list";
         //https://challengebackends.herokuapp.com/api/v1/albums/2/photos
@@ -67,16 +67,22 @@ public class MainActivity extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Log.d("RESPONSE",response);
+                       // Log.d("RESPONSE",response.toString());
                         try {
-                            JSONObject jsonObject=new JSONObject(response);
-                            JSONArray jsonArray = jsonObject.getJSONArray("employees");
+                            //JSONObject jsonObject=new JSONObject(response);
+                            JSONArray jsonArray= new JSONArray(response);
+
+                            Log.d("array:",jsonArray.toString());
+
+                           // JSONArray jsonArray = jsonObject.getJSONArray("employees");
                             //jsonArray =
                             for(int i=0;i<jsonArray.length();i++){
                                 JSONObject res=jsonArray.getJSONObject(i);
-                                String fname=res.getString("first_name");
-                                String lname=res.getString("last_name");
-                                String phone=res.getString("email");
+
+                                Log.d("id",res.getString("node_id"));
+                                String fname=(String) res.getString("id");
+                                String lname=(String) res.getString("login");
+                                String phone=res.getString("avatar_url");
                                 Contact contact=new Contact(fname,lname,phone);
                                 contacts.add(contact);
                             }
