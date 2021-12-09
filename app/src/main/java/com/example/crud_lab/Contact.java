@@ -1,35 +1,51 @@
 package com.example.crud_lab;
 
-public class Contact {
-    String firstname,lastname,phone;
+import java.io.Serializable;
 
-    public Contact(String firstname, String lastname, String phone) {
-        this.firstname = firstname;
-        this.lastname = lastname;
-        this.phone = phone;
+public class Contact implements Serializable {
+    String avatar_url;
+    String login;
+    String html_url;
+    int id;
+
+    public int getId() {
+        return id;
     }
 
-    public String getFirstname() {
-        return firstname;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public void setFirstname(String firstname) {
-        this.firstname = firstname;
+    public Contact() {
     }
 
-    public String getLastname() {
-        return lastname;
+    public String getAvatar_url() {
+        return avatar_url;
     }
 
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
+    public Contact(String avatar_url, String login, String html_url) {
+        this.avatar_url = avatar_url;
+        this.login = login;
+        this.html_url = html_url;
     }
 
-    public String getPhone() {
-        return phone;
+    public void setAvatar_url(String avatar_url) {
+        this.avatar_url = avatar_url;
     }
 
-    public void setPhone(String phone) {
-        this.phone = phone;
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    public String getHtml_url() {
+        return html_url;
+    }
+
+    public void setHtml_url(String html_url) {
+        this.html_url = html_url;
     }
 }

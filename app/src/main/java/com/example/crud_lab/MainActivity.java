@@ -6,8 +6,12 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -29,6 +33,21 @@ public class MainActivity extends AppCompatActivity {
     List<Contact> contacts;
     RecyclerView recyclerView;
     ContactAdapter adapter;
+    DatabaseHandler dbHandler;
+    Intent intent;
+    View.OnClickListener listener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            Log.d("TestingD","button clicked");
+            dbHandler = new DatabaseHandler(MainActivity.this);
+            intent = new Intent(MainActivity.this, SavedActivity.class);
+            Contact contact = (Contact) view.getTag();
+            dbHandler.addContact(contact);
+            intent.putExtra("contact",contact);
+            startActivity(intent);
+            Toast.makeText(MainActivity.this, "message", Toast.LENGTH_SHORT).show();
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +56,18 @@ public class MainActivity extends AppCompatActivity {
         recyclerView=(RecyclerView) findViewById(R.id.recyclerView);
         //recyclerView.setAdapter(adapter);
         loadList();
+
+
+
+
+        Button viewSaved = findViewById(R.id.viewSaved);
+        viewSaved.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this,SavedActivity.class);
+                startActivity(intent);
+            }
+        });
     }
     public void displayContacts(){
         Log.d("TEST","DADADADADAD");
@@ -50,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
         contacts=new ArrayList<Contact>();
         contacts.add(new Contact("test","tets","test"));
         //contacts.add(contact);
-        adapter=new ContactAdapter(contacts);
+        adapter=new ContactAdapter(contacts, listener);
         displayContacts();
     }
     public void loadList(){
@@ -80,13 +111,15 @@ public class MainActivity extends AppCompatActivity {
                                 JSONObject res=jsonArray.getJSONObject(i);
 
                                 Log.d("id",res.getString("node_id"));
-                                String fname=(String) res.getString("id");
-                                String lname=(String) res.getString("login");
-                                String phone=res.getString("avatar_url");
-                                Contact contact=new Contact(fname,lname,phone);
+
+                                String login=(String) res.getString("login");
+                                String avatar_url=(String) res.getString("avatar_url");
+                                String html_url=res.getString("html_url");
+
+                                Contact contact=new Contact(avatar_url,login,html_url);
                                 contacts.add(contact);
                             }
-                            adapter=new ContactAdapter(contacts);
+                            adapter=new ContactAdapter(contacts, listener);
                             displayContacts();
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -95,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.d("Error",error.getMessage());
+                Log.d("Error",error.toString());
             }
         }){
             @Override

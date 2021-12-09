@@ -42,7 +42,7 @@
         tools:layout_editor_absoluteY="90dp" />
 
     <EditText
-        android:id="@+id/lastname"
+        android:id="@+id/loginN"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"

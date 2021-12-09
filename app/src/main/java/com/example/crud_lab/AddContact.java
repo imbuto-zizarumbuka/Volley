@@ -29,7 +29,7 @@ public class AddContact extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_contact);
         firstname=(EditText) findViewById(R.id.firstname);
-        lastname=(EditText) findViewById(R.id.lastname);
+        lastname=(EditText) findViewById(R.id.loginN);
         telephone=(EditText) findViewById(R.id.telephone);
         save=(Button) findViewById(R.id.save);
         save.setOnClickListener(new View.OnClickListener() {
